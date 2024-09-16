@@ -1,0 +1,12 @@
+{
+  "Home": {
+    "title": "This is the main title of the page",
+    "description": "just a quick description about the site",
+    "back": "back"
+  },
+  "About": {
+    "title": "Discover more about the enterprise",
+    "description": "enterprise description",
+    "back": "back"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "Home": {
+    "title": "Este es el título principal de la página",
+    "description": "sólo una breve descripción sobre el sitio",
+    "back": "atrás"
+  },
+  "About": {
+    "title": "Descubra más sobre la empresa",
+    "description": "descripción de la empresa",
+    "back": "atrás"
+  }
+}
