@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 type teste = {
 	acabamentos: {
@@ -7,31 +8,39 @@ type teste = {
 	}[];
 };
 
-async function getSomething(): Promise<teste> {
-	const res = await fetch('http://192.168.155.193:8006/buscaInformacaoSimp', {
-		headers: {
-			Authorization:
-				'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiVEVTVEUgQVBQIE1FRElDQU8iLCJkb2N1bWVudG8iOiIyMDk2MzAwMDAyMCIsInRpbWUiOiI4aCIsInNpc3RlbWEiOjEzLCJsb2dpbklkIjoyNzU1LCJyb2xlcyI6W10sImlhdCI6MTcyNjQ4NjkyMiwiZXhwIjoxNzI2NTE1NzIyfQ.7jp6g2Srfgul2qN6wYKzrZ7Z_jkBQdFZ07_4qaV5zOc',
-		},
-	});
-	return res.json();
-}
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Product',
+	name: 'Kit Porta Pronta Pormade',
+	image: 'product.image',
+	description: 'Porta pronta pormade muito fofa e fodastica mesmo da silva',
+	sku: 'KSÇVMDOPEKFM42',
+	brand: {
+		'@type': 'Brand',
+		name: 'Pormade',
+	},
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: 4.4,
+		reviewCount: 89,
+	},
+};
 
 export async function generateMetadata(): Promise<Metadata> {
-	const res = await getSomething();
-	const a = res?.acabamentos[10]?.acabamento ?? 'Teste';
 	const data: Metadata = {
-		title: a,
+		title: 'title sobre about acerca-de',
 		description: 'descricao dinamiquinha',
-		keywords: res.acabamentos?.map((item) => item.acabamento),
+		keywords: ['custom keywords', 'about', 'acerca-de', 'sobre'],
 	};
 
 	return data;
 }
 
 export default async function Layout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: string } }) {
-	// Providing all messages to the client
-	// side is the easiest way to get started
-
-	return children;
+	return (
+		<>
+			<Script type="application/ld+json">{JSON.stringify(jsonLd)}</Script>
+			{children}
+		</>
+	);
 }

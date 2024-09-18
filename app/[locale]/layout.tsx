@@ -1,47 +1,34 @@
 import { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-
-type teste = {
-	acabamentos: {
-		id: number;
-		acabamento: string;
-	}[];
-};
-
-async function getSomething(): Promise<teste> {
-	const res = await fetch('http://192.168.155.193:8006/buscaInformacaoSimp', {
-		headers: {
-			Authorization:
-				'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21lIjoiVEVTVEUgQVBQIE1FRElDQU8iLCJkb2N1bWVudG8iOiIyMDk2MzAwMDAyMCIsInRpbWUiOiI4aCIsInNpc3RlbWEiOjEzLCJsb2dpbklkIjoyNzU1LCJyb2xlcyI6W10sImlhdCI6MTcyNjQ4NjkyMiwiZXhwIjoxNzI2NTE1NzIyfQ.7jp6g2Srfgul2qN6wYKzrZ7Z_jkBQdFZ07_4qaV5zOc',
-		},
-	});
-	return res.json();
-}
+import Script from 'next/script';
 
 export async function generateMetadata(): Promise<Metadata> {
-	const res = await getSomething();
-	const a = res?.acabamentos[0]?.acabamento ?? 'Teste';
 	const data: Metadata = {
-		title: a,
+		title: 'title',
 		description: 'dinamic description',
-		keywords: res.acabamentos?.map((item) => item.acabamento),
+		keywords: ['palabras', 'chabes'],
 	};
 
 	return data;
 }
 
-const jsonLd = {
+const richSnippet = {
 	'@context': 'https://schema.org',
-	'@type': 'Product',
-	name: 'Kit Porta Pronta Pormade',
-	image: 'product.image',
-	description: 'Porta pronta pormade muito fofa e fodastica mesmo da silva',
-	sku: 'KSÇVMDOPEKFM42',
-	brand: {
-		'@type': 'Brand',
-		name: 'Pormade',
+	'@type': 'Store',
+	image: ['https://example.com/photos/1x1/photo.jpg'],
+	name: 'Pormade',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Rua da água, 21',
+		addressLocality: 'União da Vitória',
+		addressRegion: 'PR',
+		postalCode: '89400-000',
+		addressCountry: 'BR',
 	},
+	telephone: '(42) 988887788',
+	openingHours: ['Mo-Fr 08:00-18:00', 'Sa 08:00-12:00'],
+	url: 'https://www.pormade.com.br',
 };
 
 export default async function LocaleLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: string } }) {
@@ -49,7 +36,7 @@ export default async function LocaleLayout({ children, params: { locale } }: { c
 	return (
 		<html lang={locale}>
 			<body>
-				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+				<Script type="application/ld+json">{JSON.stringify(richSnippet)}</Script>
 				<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
 			</body>
 		</html>
